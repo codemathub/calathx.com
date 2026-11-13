@@ -69,14 +69,6 @@ const FOOTER_SOCIAL_CARDS = [
   },
 ];
 
-const EXPLORE_LINKS = [
-  { label: 'Fitness', to: '/fitness-workouts' },
-  { label: 'Fuel', to: '/fuel' },
-  { label: 'Health A-Z', to: '/health-az' },
-  { label: 'Nutrition', to: '/nutrition' },
-  { label: 'Video Tutorials', to: '/video-tutorials' },
-];
-
 const COMPANY_LINKS = [
   { label: 'About us', to: '/about-us' },
   { label: 'Contact', to: '/contact-us' },
@@ -136,14 +128,14 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ================= SECTION 2: 3-Column Main Footer ================= */}
-      <div className="mx-auto max-w-7xl px-4 py-10 lg:py-12">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
+      {/* ================= SECTION 2: Compact Main Footer ================= */}
+      <div className="mx-auto max-w-7xl px-4 py-8 lg:py-9">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-center">
           
-          {/* ================= LEFT: Brand Logo & Mission ================= */}
-          <div className="lg:col-span-4 space-y-3.5">
+          {/* ================= LEFT (4 cols): Brand Logo & Mission ================= */}
+          <div className="lg:col-span-4 space-y-3">
             <Link to="/" className="inline-block transition-transform duration-300 hover:scale-105">
-              <div className="rounded-xl bg-black px-5 py-2.5 border border-gray-800 shadow-md inline-block">
+              <div className="rounded-xl bg-black px-5 py-2 border border-gray-800 shadow-md inline-block">
                 <img
                   src="/images/calathx-logo-white.png"
                   alt="CalathX"
@@ -158,57 +150,33 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* ================= MIDDLE: 2 Link Columns (EXPLORE & COMPANY) ================= */}
-          <div className="lg:col-span-4 grid grid-cols-2 gap-6 pt-1">
-            
-            {/* Explore Links */}
-            <div>
-              <h4 className="text-[11px] font-black uppercase tracking-widest text-gray-900 dark:text-white mb-3">
-                EXPLORE
-              </h4>
-              <ul className="space-y-2.5 text-xs sm:text-sm">
-                {EXPLORE_LINKS.map((item) => (
-                  <li key={item.to}>
-                    <Link
-                      to={item.to}
-                      className="text-gray-600 transition-colors duration-200 hover:text-brand-hover dark:text-gray-400 dark:hover:text-brand-primary font-medium"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Company Links */}
-            <div>
-              <h4 className="text-[11px] font-black uppercase tracking-widest text-gray-900 dark:text-white mb-3">
-                COMPANY
-              </h4>
-              <ul className="space-y-2.5 text-xs sm:text-sm">
-                {COMPANY_LINKS.map((item) => (
-                  <li key={item.to}>
-                    <Link
-                      to={item.to}
-                      className="text-gray-600 transition-colors duration-200 hover:text-brand-hover dark:text-gray-400 dark:hover:text-brand-primary font-medium"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
+          {/* ================= MIDDLE (3 cols): Company Links (in place of Explore) ================= */}
+          <div className="lg:col-span-3 lg:pl-4">
+            <h4 className="text-[11px] font-black uppercase tracking-widest text-gray-900 dark:text-white mb-3">
+              COMPANY
+            </h4>
+            <ul className="space-y-2 text-xs sm:text-sm">
+              {COMPANY_LINKS.map((item) => (
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    className="text-gray-600 transition-colors duration-200 hover:text-brand-hover dark:text-gray-400 dark:hover:text-brand-primary font-medium"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* ================= RIGHT: The Sunday Reset Newsletter Card ================= */}
-          <div className="lg:col-span-4">
-            <div className="rounded-2xl border border-gray-200 bg-gray-50/70 p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60">
+          {/* ================= RIGHT (5 cols): Large Prominent Sunday Reset Newsletter Card ================= */}
+          <div className="lg:col-span-5">
+            <div className="rounded-2xl border border-gray-200 bg-gray-50/70 p-5 sm:p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 transition-all hover:border-brand-primary/50">
               <span className="block text-[10px] font-black uppercase tracking-widest text-brand-hover dark:text-brand-primary mb-1">
                 THE SUNDAY RESET
               </span>
 
-              <h3 className="text-lg font-black text-gray-900 dark:text-white leading-snug">
+              <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white leading-snug">
                 One useful workout, every Sunday.
               </h3>
 
@@ -216,23 +184,23 @@ export default function Footer() {
                 Join readers who want practical advice, not noise.
               </p>
 
-              {/* Input with embedded circular arrow button */}
+              {/* Wide Input with embedded circular arrow button */}
               <form onSubmit={handleSubscribe} className="relative flex items-center">
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email address"
-                  className="h-10 w-full rounded-full border border-gray-300 bg-white pl-4 pr-12 text-xs text-gray-900 placeholder:text-gray-400 focus:border-brand-primary focus:outline-none transition-colors dark:border-zinc-700 dark:bg-black/50 dark:text-white dark:placeholder:text-gray-500"
+                  placeholder="Enter your email address..."
+                  className="h-11 w-full rounded-full border border-gray-300 bg-white pl-5 pr-14 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand-primary focus:outline-none transition-colors dark:border-zinc-700 dark:bg-black/50 dark:text-white dark:placeholder:text-gray-500"
                 />
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="absolute right-1 flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-black transition-all duration-300 hover:bg-brand-green3 hover:scale-105 disabled:opacity-50"
+                  className="absolute right-1.5 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-brand-primary text-black transition-all duration-300 hover:bg-brand-green3 hover:scale-105 disabled:opacity-50 shadow-sm"
                   aria-label="Subscribe"
                 >
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <ArrowRight className="h-4 w-4" />
                 </button>
               </form>
             </div>
