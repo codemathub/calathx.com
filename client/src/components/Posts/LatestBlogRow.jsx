@@ -9,7 +9,7 @@ export default function LatestBlogRow() {
   });
 
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16 xl:px-20 py-8">
+    <section className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16 xl:px-20 pt-3 pb-6 sm:pt-4 sm:pb-8">
       <div className="mb-6 flex items-center gap-3">
         <span className="h-[1px] flex-1 bg-gray-200 dark:bg-zinc-800" />
         <h3 className="rounded-xl border border-gray-200 bg-white px-6 py-2 text-xl font-black uppercase tracking-wider text-gray-900 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-white">

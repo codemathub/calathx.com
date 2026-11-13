@@ -96,10 +96,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="mt-14 w-full border-t border-gray-200 bg-white text-gray-700 transition-colors duration-300 dark:border-zinc-800 dark:bg-[#09090b] dark:text-gray-300">
+    <footer className="mt-2 md:mt-4 w-full border-t border-gray-200 bg-white text-gray-700 transition-colors duration-300 dark:border-zinc-800 dark:bg-[#09090b] dark:text-gray-300">
       
       {/* ================= SECTION 1: Original Big Social Cards Row (Above Footer) ================= */}
-      <div className="border-b border-gray-100 dark:border-zinc-800/80 px-4 py-10">
+      <div className="border-b border-gray-100 dark:border-zinc-800/80 px-4 pt-4 pb-7 md:pt-5 md:pb-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6 lg:gap-4">
             {FOOTER_SOCIAL_CARDS.map((s) => {

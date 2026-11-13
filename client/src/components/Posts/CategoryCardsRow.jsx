@@ -12,7 +12,7 @@ export default function CategoryCardsRow({ title, slug, icon, description }) {
   const posts = data || [];
 
   return (
-    <section className="mb-14">
+    <section className="mb-8 sm:mb-10">
       {/* Category Section Header */}
       <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-gray-100 pb-3 dark:border-zinc-800">
         <div className="flex items-center gap-3">

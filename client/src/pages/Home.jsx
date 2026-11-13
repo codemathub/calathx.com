@@ -21,7 +21,7 @@ export default function Home() {
       <VideoTutorialsSection />
 
       {/* 3. Category Grids (4 Cards Each with Zoom & Highlight Hover Effects) */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16 xl:px-20 pt-1 pb-6 sm:pt-2 sm:pb-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16 xl:px-20 pt-1 pb-2 sm:pt-2 sm:pb-3">
         {/* Fitness */}
         <CategoryCardsRow
           title="Fitness"

@@ -30,7 +30,7 @@ const INSTAGRAM_POSTS = [
 
 export default function InstagramSection() {
   return (
-    <section className="w-full py-12 md:py-16 transition-colors duration-300">
+    <section className="w-full pt-8 pb-3 md:pt-10 md:pb-4 transition-colors duration-300">
       <div className="mx-auto max-w-7xl px-4">
         
         {/* ================= Header (Matches Reference Image Exactly) ================= */}
