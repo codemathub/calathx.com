@@ -1,9 +1,9 @@
 import SEOHead from '../components/Common/SEOHead';
 import HeroBannerGrid from '../components/Posts/HeroBannerGrid';
-import CategorySection from '../components/Posts/CategorySection';
+import VideoTutorialsSection from '../components/Posts/VideoTutorialsSection';
+import CategoryCardsRow from '../components/Posts/CategoryCardsRow';
 import LatestBlogRow from '../components/Posts/LatestBlogRow';
 import InstagramSection from '../components/Posts/InstagramSection';
-import Sidebar from '../layouts/Sidebar/Sidebar';
 
 export default function Home() {
   return (
@@ -14,51 +14,52 @@ export default function Home() {
         url="/"
       />
 
-      {/* 1. Hero Banner Grid (Full Width Video Block) */}
+      {/* 1. Hero Section */}
       <HeroBannerGrid />
 
-      {/* 2. Main 9-Col Content + 3-Col Sidebar */}
-      <div className="mx-auto mt-8 max-w-7xl px-4">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-9">
-            <CategorySection
-              title="Fitness"
-              slug="fitness-workouts"
-              icon="/images/2019/07/fitness.png"
-              variant="masonry"
-            />
-            <CategorySection
-              title="Fuel"
-              slug="fuel"
-              icon="/images/2019/07/fuel.png"
-              variant="overlay"
-            />
-            <CategorySection
-              title="Health A-Z"
-              slug="health-az"
-              icon="/images/2019/07/health.png"
-              variant="masonry"
-            />
-            <CategorySection
-              title="Nutrition"
-              slug="nutrition"
-              icon="/images/2019/07/nutrition.png"
-              variant="overlay"
-            />
-          </div>
+      {/* 2. Video Tutorials & Workout Section (Directly Below Hero with Play on Click & View More) */}
+      <VideoTutorialsSection />
 
-          <div className="hidden lg:col-span-3 lg:block">
-            <Sidebar />
-          </div>
-        </div>
+      {/* 3. Category Grids (4 Cards Each with Zoom & Highlight Hover Effects) */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16 xl:px-20 pt-1 pb-6 sm:pt-2 sm:pb-8">
+        {/* Fitness */}
+        <CategoryCardsRow
+          title="Fitness"
+          slug="fitness-workouts"
+          icon="/images/2019/07/fitness.png"
+          description="High-intensity routines, calisthenics breakdowns, and progressive strength plans."
+        />
+
+        {/* Fuel */}
+        <CategoryCardsRow
+          title="Fuel"
+          slug="fuel"
+          icon="/images/2019/07/fuel.png"
+          description="Optimal fueling strategies, clean supplements, and hydration science."
+        />
+
+        {/* Health A-Z */}
+        <CategoryCardsRow
+          title="Health A-Z"
+          slug="health-az"
+          icon="/images/2019/07/health.png"
+          description="Science-backed health answers, injury prevention, and everyday longevity."
+        />
+
+        {/* Nutrition */}
+        <CategoryCardsRow
+          title="Nutrition"
+          slug="nutrition"
+          icon="/images/2019/07/nutrition.png"
+          description="Macro guidelines, whole-food recipes, and sustainable eating protocols."
+        />
       </div>
 
-      {/* 3. Latest Blog Row */}
+      {/* 4. Latest Blog Row */}
       <LatestBlogRow />
 
-      {/* 4. Follow Us on Instagram */}
+      {/* 5. Follow Us on Instagram */}
       <InstagramSection />
     </>
   );
 }
-

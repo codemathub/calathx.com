@@ -11,6 +11,9 @@ const getPosts = async (req, res, next) => {
 
     const filter = {};
     if (status !== 'all') filter.status = status;
+    if (req.query.isFeatured !== undefined) {
+      filter.isFeatured = req.query.isFeatured === 'true';
+    }
 
     const [posts, total] = await Promise.all([
       Post.find(filter)
@@ -18,7 +21,7 @@ const getPosts = async (req, res, next) => {
         .populate('categories', 'name slug icon')
         .populate('tags', 'name slug')
         .populate('featuredImage', 'url altText')
-        .sort({ publishedAt: -1 })
+        .sort({ isFeatured: -1, publishedAt: -1 })
         .skip(skip)
         .limit(limit),
       Post.countDocuments(filter),
@@ -69,7 +72,7 @@ const getPostsByCategory = async (req, res, next) => {
         .populate('author', 'username displayName')
         .populate('categories', 'name slug icon')
         .populate('featuredImage', 'url altText')
-        .sort({ publishedAt: -1 })
+        .sort({ isFeatured: -1, homeOrder: 1, publishedAt: -1 })
         .skip(skip)
         .limit(limit),
       Post.countDocuments(filter),
@@ -227,6 +230,70 @@ const incrementView = async (req, res, next) => {
   }
 };
 
+const getVideoPosts = async (req, res, next) => {
+  try {
+    const limit = parseInt(req.query.limit, 10) || 4;
+    const videoCat = await Category.findOne({ slug: 'video-tutorials' });
+    const query = {
+      status: 'publish',
+      $or: [
+        { videoUrl: { $exists: true, $ne: '' } },
+        ...(videoCat ? [{ categories: videoCat._id }] : []),
+      ],
+    };
+
+    let posts = await Post.find(query)
+      .populate('categories', 'name slug icon')
+      .populate('featuredImage', 'url altText')
+      .sort({ isFeatured: -1, homeOrder: 1, publishedAt: -1 })
+      .limit(limit);
+
+    // Fallback if no explicit video posts found
+    if (posts.length === 0) {
+      posts = await Post.find({ status: 'publish' })
+        .populate('categories', 'name slug icon')
+        .populate('featuredImage', 'url altText')
+        .sort({ isFeatured: -1, homeOrder: 1, publishedAt: -1 })
+        .limit(limit);
+    }
+
+    res.json({ success: true, data: posts });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const toggleFeaturedPost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ success: false, message: 'Post not found' });
+    }
+    post.isFeatured = !post.isFeatured;
+    await post.save();
+    res.json({ success: true, isFeatured: post.isFeatured, data: post });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updatePostOrder = async (req, res, next) => {
+  try {
+    const { homeOrder } = req.body;
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { homeOrder: Number(homeOrder) ?? 999 },
+      { new: true }
+    );
+    if (!post) {
+      return res.status(404).json({ success: false, message: 'Post not found' });
+    }
+    res.json({ success: true, homeOrder: post.homeOrder, data: post });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getPosts,
   getPostBySlug,
@@ -235,6 +302,9 @@ module.exports = {
   getPopularPosts,
   getLatestPosts,
   getRelatedPosts,
+  getVideoPosts,
+  toggleFeaturedPost,
+  updatePostOrder,
   createPost,
   updatePost,
   deletePost,

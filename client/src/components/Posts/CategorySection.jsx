@@ -14,27 +14,27 @@ export default function CategorySection({ title, slug, icon, variant = 'masonry'
 
   return (
     <section className="mb-10">
-      {/* Section Title matching Flatsome section-title-bold-center */}
+      {/* Section Title */}
       <div className="mb-5 flex items-center gap-3">
-        <span className="h-[2px] flex-1 bg-gray-200" />
+        <span className="h-[1px] flex-1 bg-gray-200 dark:bg-zinc-800" />
         <Link
           to={`/${slug}`}
-          className="flex items-center gap-2 border-2 border-gray-200 px-4 py-1.5 text-lg font-bold uppercase tracking-wide text-brand-black transition-colors hover:border-brand-primary"
+          className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-2 text-base font-bold uppercase tracking-wider text-brand-black transition-all hover:border-brand-primary hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:hover:border-brand-primary"
         >
-          {icon && <img src={icon} alt={title} className="h-6 w-6 object-contain" />}
+          {icon && <img src={icon} alt={title} className="h-5 w-5 object-contain" />}
           <span>{title}</span>
         </Link>
-        <span className="h-[2px] flex-1 bg-gray-200" />
+        <span className="h-[1px] flex-1 bg-gray-200 dark:bg-zinc-800" />
       </div>
 
       {isLoading ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {[1, 2, 3, 4].map((n) => (
-            <div key={n} className="h-64 animate-pulse rounded bg-gray-200" />
+            <div key={n} className="h-64 animate-pulse rounded-xl bg-gray-200 dark:bg-zinc-800" />
           ))}
         </div>
       ) : posts.length === 0 ? (
-        <p className="py-6 text-center text-sm text-gray-500">No posts in {title} yet.</p>
+        <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">No posts in {title} yet.</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {posts.map((post) =>
@@ -49,4 +49,3 @@ export default function CategorySection({ title, slug, icon, variant = 'masonry'
     </section>
   );
 }
-

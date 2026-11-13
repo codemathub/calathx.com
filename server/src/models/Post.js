@@ -27,6 +27,8 @@ const postSchema = new mongoose.Schema(
     ],
     inlineImages: [{ type: String }],
     videoUrl: { type: String, default: '' },
+    isFeatured: { type: Boolean, default: false, index: true },
+    homeOrder: { type: Number, default: 999, index: true },
     viewCount: { type: Number, default: 0 },
     publishedAt: { type: Date, default: Date.now },
   },

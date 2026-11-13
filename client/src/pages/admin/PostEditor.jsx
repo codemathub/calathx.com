@@ -16,6 +16,9 @@ export default function PostEditor() {
     excerpt: '',
     status: 'publish',
     featuredImageUrl: '',
+    videoUrl: '',
+    isFeatured: false,
+    homeOrder: 999,
     categories: [],
     seo: { title: '', description: '', focusKeyword: '' },
   });
@@ -39,6 +42,9 @@ export default function PostEditor() {
         excerpt: p.excerpt || '',
         status: p.status || 'publish',
         featuredImageUrl: p.featuredImage?.url || p.featuredImageUrl || '',
+        videoUrl: p.videoUrl || '',
+        isFeatured: Boolean(p.isFeatured),
+        homeOrder: p.homeOrder ?? 999,
         categories: (p.categories || []).map((c) => c._id),
         seo: p.seo || { title: '', description: '', focusKeyword: '' },
       });
@@ -129,6 +135,57 @@ export default function PostEditor() {
               <option value="publish">Published</option>
               <option value="draft">Draft</option>
             </select>
+          </div>
+        </div>
+
+        {/* Featured Post Toggle, Home Order & Video URL */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 rounded-lg bg-gray-50 p-4 border border-gray-200">
+          <div className="flex flex-col justify-center">
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="isFeatured"
+                checked={form.isFeatured}
+                onChange={(e) => setForm({ ...form, isFeatured: e.target.checked })}
+                className="h-4 w-4 rounded border-gray-300 text-brand-hover focus:ring-brand-primary"
+              />
+              <label htmlFor="isFeatured" className="text-xs font-bold uppercase text-gray-800 cursor-pointer">
+                ⭐ Featured on Home
+              </label>
+            </div>
+            <p className="mt-1 text-[11px] text-gray-500">
+              Pins post to top of its category / video section.
+            </p>
+          </div>
+
+          <div>
+            <label className="mb-1 block text-xs font-bold uppercase text-gray-600">
+              Home Priority / Order
+            </label>
+            <input
+              type="number"
+              min="1"
+              max="999"
+              value={form.homeOrder}
+              onChange={(e) => setForm({ ...form, homeOrder: Number(e.target.value) || 999 })}
+              placeholder="1 (Big card), 2, 3..."
+              className="w-full rounded border border-gray-300 px-3 py-1.5 text-xs focus:border-brand-primary focus:outline-none"
+            />
+            <span className="text-[10px] text-gray-400">1 = First / Big card on home</span>
+          </div>
+
+          <div>
+            <label className="mb-1 block text-xs font-bold uppercase text-gray-600">
+              Video URL (YouTube or MP4)
+            </label>
+            <input
+              type="text"
+              value={form.videoUrl}
+              onChange={(e) => setForm({ ...form, videoUrl: e.target.value })}
+              placeholder="https://www.youtube.com/watch?v=..."
+              className="w-full rounded border border-gray-300 px-3 py-1.5 text-xs focus:border-brand-primary focus:outline-none"
+            />
+            <span className="text-[10px] text-gray-400">Plays video modal on click</span>
           </div>
         </div>
 

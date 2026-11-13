@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
@@ -10,8 +11,8 @@ export default {
           accent: '#659a41', // Back-to-top border
           green2: '#8dc11e', // Subscribe button, page header overlay
           green3: '#81d742', // Subscribe hover
-          dark: '#232323', // Footer bg
-          black: '#000000', // Header nav text / footer top bg
+          dark: '#18181b', // Dark surface bg
+          black: '#09090b', // Deep OLED/Charcoal black
         },
       },
       fontFamily: {
@@ -22,4 +23,3 @@ export default {
   },
   plugins: [],
 };
-
