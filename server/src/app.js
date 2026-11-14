@@ -10,28 +10,64 @@ const connectDB = require('./config/db');
 
 const app = express();
 
+// Trust reverse proxy (Nginx) so req.ip and https protocols are correctly identified
+app.set('trust proxy', 1);
+
 // Security & middleware
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
+
+// Dynamic CORS configuration
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(',').map((o) => o.trim().replace(/\/$/, ''))
+  : ['http://localhost:5173', 'http://localhost:5000', 'https://calathx.com', 'https://www.calathx.com'];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      // allow requests with no origin (mobile apps, curl, or same-origin Nginx proxy)
+      if (!origin) return callback(null, true);
+      const normalized = origin.replace(/\/$/, '');
+      if (
+        allowedOrigins.includes(normalized) ||
+        normalized.endsWith('.calathx.com') ||
+        normalized === 'https://calathx.com'
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
 app.use(compression());
-app.use(morgan('dev'));
+app.use(process.env.NODE_ENV === 'production' ? morgan('combined') : morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
-// Rate limiting
+// Rate limiting for general API (1500 req / 15 mins)
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200,
+  windowMs: 15 * 60 * 1000,
+  max: 1500,
   standardHeaders: true,
   legacyHeaders: false,
 });
 app.use('/api', apiLimiter);
+
+// Stricter rate limit on auth endpoints to prevent brute-force attacks (30 attempts / 15 mins)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  message: { success: false, message: 'Too many login attempts. Please try again after 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api/auth/login', authLimiter);
 
 // Health check
 app.get('/api/health', (req, res) => {
