@@ -29,9 +29,10 @@ const uploadMedia = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'No file uploaded' });
     }
 
-    const ext = path.extname(req.file.originalname);
+    const ext = path.extname(req.file.originalname) || (req.file.mimetype.includes('mp4') ? '.mp4' : '');
     const baseName = path.basename(req.file.originalname, ext).replace(/[^a-zA-Z0-9-_]/g, '-');
-    const b2Key = `uploads/${new Date().getFullYear()}/${Date.now()}-${baseName}${ext}`;
+    const folder = req.file.mimetype.startsWith('video/') ? 'videos' : 'uploads';
+    const b2Key = `${folder}/${new Date().getFullYear()}/${Date.now()}-${baseName}${ext}`;
 
     const url = await uploadToB2(req.file.buffer, b2Key, req.file.mimetype);
 

@@ -6,6 +6,24 @@ import api from '../services/api';
 import SEOHead from '../components/Common/SEOHead';
 import Sidebar from '../layouts/Sidebar/Sidebar';
 
+function getEmbedUrl(url) {
+  if (!url) return '';
+  try {
+    if (url.includes('youtube.com/watch')) {
+      const v = new URL(url).searchParams.get('v');
+      return `https://www.youtube-nocookie.com/embed/${v}`;
+    }
+    if (url.includes('youtu.be/')) {
+      const id = url.split('youtu.be/')[1]?.split('?')[0];
+      return `https://www.youtube-nocookie.com/embed/${id}`;
+    }
+    if (url.includes('youtube.com/embed/')) return url;
+    return url;
+  } catch {
+    return url;
+  }
+}
+
 export default function SinglePost() {
   const { category, slug } = useParams();
   const [commentForm, setCommentForm] = useState({ authorName: '', authorEmail: '', content: '' });
@@ -117,13 +135,33 @@ export default function SinglePost() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Article Body */}
           <article className="lg:col-span-9">
-            {featuredImg && (
+            {/* Video Player (Backblaze B2 HTML5 Video or Embed) */}
+            {post.videoUrl ? (
+              <div className="mb-6 overflow-hidden rounded-2xl bg-black shadow-2xl border border-zinc-800">
+                {post.videoUrl.match(/\.(mp4|webm|mov|ogg)($|\?)/i) || post.videoUrl.includes('backblazeb2.com') ? (
+                  <video
+                    src={post.videoUrl}
+                    controls
+                    playsInline
+                    className="aspect-video w-full object-contain bg-black"
+                  />
+                ) : (
+                  <iframe
+                    src={getEmbedUrl(post.videoUrl)}
+                    title={post.title}
+                    className="aspect-video w-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                )}
+              </div>
+            ) : featuredImg ? (
               <img
                 src={featuredImg}
                 alt={post.title}
                 className="mb-6 max-h-[460px] w-full rounded object-cover shadow"
               />
-            )}
+            ) : null}
 
             <div
               className="prose prose-lg max-w-none text-justify prose-headings:font-heading prose-headings:text-brand-black prose-a:text-brand-hover prose-img:mx-auto prose-img:rounded"

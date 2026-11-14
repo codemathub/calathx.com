@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { Upload, Video, Trash2, CheckCircle2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
 
@@ -24,6 +25,27 @@ export default function PostEditor() {
   });
   const [postId, setPostId] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [videoUploading, setVideoUploading] = useState(false);
+
+  const handleVideoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setVideoUploading(true);
+    const toastId = toast.loading('Uploading video to Backblaze B2... (this may take a few moments)');
+    const fd = new FormData();
+    fd.append('file', file);
+    try {
+      const res = await api.media.upload(fd);
+      const url = res.data.data.url;
+      setForm((prev) => ({ ...prev, videoUrl: url }));
+      toast.success('Video uploaded to Backblaze B2!', { id: toastId });
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Video upload failed. Check file size.', { id: toastId });
+    } finally {
+      setVideoUploading(false);
+      e.target.value = '';
+    }
+  };
 
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
@@ -174,18 +196,59 @@ export default function PostEditor() {
             <span className="text-[10px] text-gray-400">1 = First / Big card on home</span>
           </div>
 
+          {/* Video Upload Directly to Backblaze B2 */}
           <div>
-            <label className="mb-1 block text-xs font-bold uppercase text-gray-600">
-              Video URL (YouTube or MP4)
+            <label className="mb-1 block text-xs font-bold uppercase text-gray-800">
+              Video (Upload to Backblaze B2)
             </label>
-            <input
-              type="text"
-              value={form.videoUrl}
-              onChange={(e) => setForm({ ...form, videoUrl: e.target.value })}
-              placeholder="https://www.youtube.com/watch?v=..."
-              className="w-full rounded border border-gray-300 px-3 py-1.5 text-xs focus:border-brand-primary focus:outline-none"
-            />
-            <span className="text-[10px] text-gray-400">Plays video modal on click</span>
+
+            {!form.videoUrl ? (
+              <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white p-3 text-center transition-all hover:border-brand-primary hover:bg-brand-primary/5">
+                <Video className="mb-1 h-5 w-5 text-brand-hover" />
+                <span className="text-xs font-bold text-gray-800">
+                  {videoUploading ? 'Uploading to Backblaze B2...' : 'Upload Video File'}
+                </span>
+                <span className="text-[10px] text-gray-400">
+                  Select MP4, WebM, MOV (Auto-stored in Backblaze B2)
+                </span>
+                <input
+                  type="file"
+                  accept="video/mp4,video/webm,video/quicktime,video/ogg,video/x-matroska"
+                  onChange={handleVideoUpload}
+                  disabled={videoUploading}
+                  className="hidden"
+                />
+              </label>
+            ) : (
+              <div className="rounded-lg border border-gray-200 bg-white p-2.5 shadow-xs">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-green-700">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
+                    <span>Video Uploaded</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setForm((prev) => ({ ...prev, videoUrl: '' }))}
+                    className="inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-bold text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                    <span>Remove</span>
+                  </button>
+                </div>
+
+                {/* Video Player Preview */}
+                <div className="relative aspect-video w-full overflow-hidden rounded bg-black">
+                  <video
+                    src={form.videoUrl}
+                    controls
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <span className="mt-1 block truncate font-mono text-[9px] text-gray-400" title={form.videoUrl}>
+                  {form.videoUrl}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
