@@ -50,6 +50,7 @@ export default function AppRouter() {
           <Route path="/fuel" element={<CategoryPage />} />
           <Route path="/health-az" element={<CategoryPage />} />
           <Route path="/nutrition" element={<CategoryPage />} />
+          <Route path="/myth-buster" element={<CategoryPage />} />
           <Route path="/video-tutorials" element={<CategoryPage />} />
           <Route path="/category/:slug" element={<CategoryPage />} />
 

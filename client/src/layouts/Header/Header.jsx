@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { label: 'Fuel', to: '/fuel' },
   { label: 'Health A-Z', to: '/health-az' },
   { label: 'Nutrition', to: '/nutrition' },
+  { label: 'Myth Buster', to: '/myth-buster' },
   { label: 'Video Tutorials', to: '/video-tutorials' },
   { label: 'Contact Us', to: '/contact-us' },
 ];

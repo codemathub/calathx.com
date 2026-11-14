@@ -53,6 +53,13 @@ export default function Home() {
           icon="/images/2019/07/nutrition.png"
           description="Macro guidelines, whole-food recipes, and sustainable eating protocols."
         />
+
+        {/* Myth Buster */}
+        <CategoryCardsRow
+          title="Myth Buster"
+          slug="myth-buster"
+          description="Debunking popular fitness myths, fake health trends, and diet misconceptions with evidence."
+        />
       </div>
 
       {/* 4. Latest Blog Row */}
